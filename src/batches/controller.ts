@@ -10,6 +10,8 @@ import { Validate, IsInt } from 'class-validator'
 
 @JsonController()
 export default class BatchController {
+//show  Batches
+
 
   @Authorized()
   @Get('/allBatches/:id([0-9]+)')
@@ -25,4 +27,26 @@ export default class BatchController {
   getBatches() {
     return Batch.find()
   }
+
+// Create Batches/Students
+  @Authorized()
+  @Post("/addBatch")
+  @HttpCode(201)
+  async create(
+    @Body() batch: Batch,
+  ) {
+    const entityBatch = await Batch.create({
+        titleOfBatch: batch.titleOfBatch,
+        startDate: batch.startDate,
+        endDate: batch.endDate
+    }).save()
+
+    for (let i = 0; i < batch.student.length; i++) {
+      const entityStudent = await Student.create({
+        batch: entityBatch,
+        full_name: batch.student[i].full_name,
+        url: batch.student[i].url
+      }).save();
+      }
+    }
 }

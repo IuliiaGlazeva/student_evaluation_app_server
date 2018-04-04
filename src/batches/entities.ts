@@ -4,12 +4,6 @@ import { IsString, IsBoolean, IsDate } from 'class-validator'
 
 
 
-//export type Symbol = 'x' | 'o'
-
-//type Date = date
-//type Status = 'pending' | 'started' | 'finished'
-
-
 @Entity()
 export class Batch extends BaseEntity {
 
@@ -58,9 +52,6 @@ export class Student extends BaseEntity {
 
   //@ManyToOne(_ => Game, game => game.players)
   //game: Game
-
-  @Column()
-  userId: number
 
   @Column('text', {nullable:false})
   full_name: string
