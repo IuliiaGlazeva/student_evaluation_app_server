@@ -25,6 +25,7 @@ export class Batch extends BaseEntity {
 
   @OneToMany(_ => Student, student => student.batch, {eager:true})
   student: Student[]
+
   //@Column('integer', {default: 0})
   //level: number
 
@@ -50,8 +51,10 @@ export class Student extends BaseEntity {
   @ManyToOne(_ => Batch, batch => batch.student)
   batch: Batch
 
+
   //@ManyToOne(_ => Game, game => game.players)
   //game: Game
+
 
   @Column('text', {nullable:false})
   full_name: string

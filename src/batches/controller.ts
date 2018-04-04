@@ -10,8 +10,7 @@ import { Validate, IsInt } from 'class-validator'
 
 @JsonController()
 export default class BatchController {
-//show  Batches
-
+//show  Batches/students
 
   @Authorized()
   @Get('/allBatches/:id([0-9]+)')
@@ -27,6 +26,17 @@ export default class BatchController {
   getBatches() {
     return Batch.find()
   }
+
+  @Authorized()
+  @Get('/allBatches/:id([0-9]+)/allStudents')
+  @HttpCode(200)
+  getStudentsInBatch(
+    @Param('id') batch_id : number
+  ) {
+      return Batch.findOneById(batch_id)  
+    }
+
+
 
 // Create Batches/Students
   @Authorized()

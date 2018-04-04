@@ -1,12 +1,16 @@
-import "reflect-metadata";
-import { createKoaServer } from "routing-controllers";
-import { Action, BadRequestError } from "routing-controllers";
-import LoginController from "./logins/controller";
-import { verify } from "./jwt";
+import "reflect-metadata"
+import { createKoaServer } from "routing-controllers"
+import { Action, BadRequestError } from "routing-controllers"
+import LoginController from "./logins/controller"
+import BatchController from "./batches/controller"
+
+import { verify } from "./jwt"
 
 export const app = createKoaServer({
   cors: true,
-  controllers: [LoginController],
+  controllers: [
+    LoginController, BatchController
+  ],
 
     authorizationChecker: (action: Action) => {
         const header: string = action.request.headers.authorization
