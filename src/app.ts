@@ -1,43 +1,30 @@
-import "reflect-metadata"
-import { createKoaServer } from "routing-controllers"
-import { Action, BadRequestError } from "routing-controllers"
-import LoginController from "./logins/controller"
-import BatchController from "./batches/controller"
+import 'reflect-metadata'
+import {Action, BadRequestError, createKoaServer} from "routing-controllers"
+import TeacherController from './teachers/controller'
+import LoginController from './logins/controller'
+import BatchController from './batches/controller'
+import {verify} from './jwt'
 
-import { verify } from "./jwt"
-
-export const app = createKoaServer({
+export default createKoaServer({
   cors: true,
   controllers: [
-    LoginController, BatchController
+    TeacherController,
+    LoginController,
+    BatchController
   ],
+  authorizationChecker: (action: Action) => {
+    const header: string = action.request.headers.authorization
+    if (header && header.startsWith('Bearer ')) {
+      const [ , token ] = header.split(' ')
 
-    authorizationChecker: (action: Action) => {
-        const header: string = action.request.headers.authorization
-        if (header && header.startsWith('Bearer ')) {
-          const [ , token ] = header.split(' ')
-
-          try {
-            return !!(token && verify(token))
-          }
-          catch (e) {
-            throw new BadRequestError(e)
-          }
-        }
-        return false
-    },
-
-    currentUserChecker: async (action: Action) => {
-      const header: string = action.request.headers.authorization;
-      if (header && header.startsWith("Bearer ")) {
-        const [, token] = header.split(" ");
-
-        if (token) {
-          const { id } = verify(token);
-
-          return { id };
-        }
+      try {
+        return !!(token && verify(token))
       }
-      return {};
+      catch (e) {
+        throw new BadRequestError(e)
+      }
     }
-});
+
+    return false
+  },
+})

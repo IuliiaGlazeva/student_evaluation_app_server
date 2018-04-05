@@ -1,5 +1,5 @@
 import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, Index, OneToMany, ManyToOne } from 'typeorm'
-import User from '../users/entity'
+//import Teacher from '../teachers/entity'
 import { IsString, IsBoolean, IsDate } from 'class-validator'
 
 

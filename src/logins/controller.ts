@@ -1,7 +1,7 @@
 import { IsString } from 'class-validator'
 import { JsonController, Post, Body, BadRequestError } from 'routing-controllers'
 import { sign } from '../jwt'
-import User from '../users/entity'
+import Teacher from '../teachers/entity'
 
 class AuthenticatePayload {
   @IsString()
@@ -18,12 +18,12 @@ export default class LoginController {
   async authenticate(
     @Body() { email, password }: AuthenticatePayload
   ) {
-    const user = await User.findOne({ where: { email } })
-    if (!user) throw new BadRequestError('A user with this email does not exist')
+    const teacher = await Teacher.findOne({ where: { email } })
+    if (!teacher) throw new BadRequestError('A teacher with this email does not exist')
 
-    if (!await user.checkPassword(password)) throw new BadRequestError('The password is not correct')
+    if (!await teacher.checkPassword(password)) throw new BadRequestError('The password is not correct')
 
-    const jwt = sign({ id: user.id! })
+    const jwt = sign({ id: teacher.id! })
     return { jwt }
   }
 }

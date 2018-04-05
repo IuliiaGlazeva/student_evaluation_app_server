@@ -11,52 +11,41 @@ import { Validate, IsInt } from 'class-validator'
 @JsonController()
 export default class BatchController {
 //show  Batches/students
+  @Get('/allBatches')
+  async getBatches() {
+    return Batch.find()
+  }
+
 
   @Authorized()
   @Get('/allBatches/:id([0-9]+)')
   @HttpCode(200)
-  getBatch(
+  async getBatch(
     @Param('id') id: number
   ) {
     return Batch.findOneById(id)
   }
 
-  @Authorized()
-  @Get('/allBatches')
-  getBatches() {
-    return Batch.find()
-  }
+  //@Authorized()
+
 
   @Authorized()
   @Get('/allBatches/:id([0-9]+)/allStudents')
   @HttpCode(200)
-  getStudentsInBatch(
+  async getStudentsInBatch(
     @Param('id') batch_id : number
   ) {
-      return Batch.findOneById(batch_id)  
+      return Batch.findOneById(batch_id)
     }
-
 
 
 // Create Batches/Students
   @Authorized()
-  @Post("/addBatch")
+  @Post("/allBatches")
   @HttpCode(201)
   async create(
     @Body() batch: Batch,
   ) {
-    const entityBatch = await Batch.create({
-        titleOfBatch: batch.titleOfBatch,
-        startDate: batch.startDate,
-        endDate: batch.endDate
-    }).save()
-
-    for (let i = 0; i < batch.student.length; i++) {
-      const entityStudent = await Student.create({
-        batch: entityBatch,
-        full_name: batch.student[i].full_name,
-        url: batch.student[i].url
-      }).save();
-      }
-    }
+  return batch.save()
+}
 }

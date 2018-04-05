@@ -1,8 +1,7 @@
-import {app} from './app'
+import app from './app'
 import setupDb from './db'
 
 const port = process.env.PORT || 4000
-
 
 setupDb()
   .then(_ => {
